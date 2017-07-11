@@ -1,0 +1,9 @@
+{
+  "mongo": {
+    "url": "",
+    "ttl": "604800"
+  },
+  "session": {
+    "secureCookie": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "port": "3000",
+  "mongo": {
+    "url": "localhost:27017/reddit-like-test-db",
+    "ttl": "3600"
+  },
+  "session": {
+    "secretKey": "Good Morning England",
+    "secureCookie" : false
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "mongo": {
+    "user": "MONGO_USER",
+    "password": "MONGO_PASSWORD"
+  }
+}
