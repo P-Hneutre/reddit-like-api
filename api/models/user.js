@@ -9,8 +9,8 @@ const formatUser = (u) => {
     const fieldsRequired = ['firstName', 'lastName', 'email', 'password'];
     return new Promise((resolve, reject) => {
         const missingFields = validationService.isValidJson(u, fieldsRequired);
-        if(missingFields !== true)
-            return reject(`User not valid missing: ${missingFields}`);
+        if(missingFields !== true) return reject({code: 400, message: `Post not valid missing: ${missingFields}`});
+
         let user = _.pick(u, fieldsRequired);
         user.firstName = _.capitalize(user.firstName.trim());
         user.lastName = _.capitalize(user.lastName.trim());
@@ -25,13 +25,13 @@ const formatUser = (u) => {
 module.exports.insert = (user) => {
     return new Promise((resolve, reject) => {
         this.getUserByEmail(user.email).then(() => {
-            return reject('409');
+            return reject({code: 409, message: 'User not found'});
         }).catch(() => {
             formatUser(user).then((userFormatted) => {
                 users.insertOne(userFormatted).then((user) => {
                     resolve(user);
-                }).catch((err) => { return reject(err); });
-            }).catch((err) => { return reject(err); });
+                }).catch((err) => { return reject({code: 500, message:err}); });
+            }).catch((err) => { return reject({code: 500, message:err}); });
         });
     });
 };
@@ -39,17 +39,17 @@ module.exports.insert = (user) => {
 module.exports.getUserById = (userId) => {
     return new Promise((resolve, reject) => {
         users.findOne({_id: ObjectId(userId)}, {password: 0}).then((user) => {
-            if (!user) return reject(404);
+            if (!user) return reject({code: 404, message: 'User not found'});
             resolve(user);
-        }).catch((err) => { return reject(err); });
+        }).catch((err) => { return reject({code: 500, message:err}); });
     });
 };
 
 module.exports.getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         users.findOne({email: email.toLowerCase()}, {password: 0}).then((user) => {
-            if (!user) return reject(404);
+            if (!user) return reject({code: 404, message: 'User not found'});
             resolve(user);
-        }).catch((err) => { return reject(err); });
+        }).catch((err) => { return reject({code: 500, message:err}); });
     })
 };
