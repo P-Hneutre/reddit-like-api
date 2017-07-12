@@ -24,13 +24,11 @@ const formatComment = (c) => {
 
 module.exports.insert = (postId, comment) => {
     return new Promise((resolve, reject) => {
-        formatComment(comment).then((commentFormatted) => {
+        formatComment(comment).then(commentFormatted => {
             posts.findOneAndUpdate({_id: ObjectId(postId)}, {$push: { comments: commentFormatted}}).then((post) => {
                 if(post.value === null) return reject({code: 404, message: 'Post not found'});
                 resolve(commentFormatted);
-            }).catch((err) => { return reject({code: 500, message: err}); });
-        }).catch((err) => {
-            return reject(err);
-        });
+            }).catch(err => { return reject({code: 500, message: err}); });
+        }).catch(err => { return reject(err); });
     });
 };

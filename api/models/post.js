@@ -24,22 +24,22 @@ const formatPost = (p) => {
 
 module.exports.insert = (post) => {
     return new Promise((resolve, reject) => {
-        formatPost(post).then((postFormatted) => {
-            posts.insertOne(postFormatted).then((post) => {
+        formatPost(post).then(postFormatted => {
+            posts.insertOne(postFormatted).then(post => {
                 resolve(post);
             }).catch(err => {
                 return reject({code: 500, message: err});
             });
-        }).catch((err) => { return reject(err); });
+        }).catch(err => { return reject(err); });
     });
 };
 
 module.exports.getPostById = (postId) => {
     return new Promise((resolve, reject) => {
-        posts.findOne({_id: ObjectId(postId)}).then((post) => {
+        posts.findOne({_id: ObjectId(postId)}).then(post => {
             if(!post) return reject({code: 404, message: 'Post not found'});
             resolve(post);
-        }).catch((err) => { return reject({code: 500, message: err}); });
+        }).catch(err => { return reject({code: 500, message: err}); });
     });
 };
 

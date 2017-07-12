@@ -27,29 +27,29 @@ module.exports.insert = (user) => {
         this.getUserByEmail(user.email).then(() => {
             return reject({code: 409, message: 'User not found'});
         }).catch(() => {
-            formatUser(user).then((userFormatted) => {
+            formatUser(user).then(userFormatted => {
                 users.insertOne(userFormatted).then((user) => {
                     resolve(user);
-                }).catch((err) => { return reject({code: 500, message:err}); });
-            }).catch((err) => { return reject({code: 500, message:err}); });
+                }).catch(err => { return reject({code: 500, message:err}); });
+            }).catch(err => { return reject({code: 500, message:err}); });
         });
     });
 };
 
 module.exports.getUserById = (userId) => {
     return new Promise((resolve, reject) => {
-        users.findOne({_id: ObjectId(userId)}, {password: 0}).then((user) => {
+        users.findOne({_id: ObjectId(userId)}, {password: 0}).then(user => {
             if (!user) return reject({code: 404, message: 'User not found'});
             resolve(user);
-        }).catch((err) => { return reject({code: 500, message:err}); });
+        }).catch(err => { return reject({code: 500, message:err}); });
     });
 };
 
 module.exports.getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
-        users.findOne({email: email.toLowerCase()}, {password: 0}).then((user) => {
+        users.findOne({email: email.toLowerCase()}, {password: 0}).then(user => {
             if (!user) return reject({code: 404, message: 'User not found'});
             resolve(user);
-        }).catch((err) => { return reject({code: 500, message:err}); });
+        }).catch(err => { return reject({code: 500, message:err}); });
     })
 };
