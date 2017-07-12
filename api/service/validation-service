@@ -1,0 +1,13 @@
+const _ = require('lodash');
+
+module.exports.isValidJson = (input, requirements) => {
+    let missingFields = [];
+    for(let property of requirements) {
+        if(!_.has(input, property)) {
+            missingFields.push(property);
+        }
+    }
+    if(missingFields.length > 0)
+        return missingFields.toString();
+    return true;
+};

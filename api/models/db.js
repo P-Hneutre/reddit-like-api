@@ -9,14 +9,16 @@ const buildDbUrl = (url) => {
     return full + url;
 };
 
-const init = (next) => {
-    MongoClient.connect(buildDbUrl(config.mongo.url) ).then((db) => {
-        database = db;
-        console.info('Connected correctly to mongo db', config.mongo.url);
-        next();
-    }).catch((err) => {
-        console.error('Error connecting to db', config.mongo.url, err);
-        return next(err);
+const init = () => {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(buildDbUrl(config.mongo.url) ).then((db) => {
+            database = db;
+            console.info('Connected correctly to mongo db', config.mongo.url);
+            resolve();
+        }).catch((err) => {
+            console.error('Error connecting to db', config.mongo.url, err);
+            return reject(err);
+        });
     });
 };
 

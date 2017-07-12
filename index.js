@@ -9,10 +9,8 @@ const db = require('./api/models/db');
 const app = express();
 let server = null;
 
-const run = function run(next) {
-    db.init(function (err) {
-        if (err) console.error('Could not connect to mongo db', err);
-
+const run = (next) => {
+    db.init().then(() => {
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(cookieParser(config.session.secretKey));
@@ -27,6 +25,7 @@ const run = function run(next) {
             saveUninitialized: false
         }));
 
+        app.use('/users', require('./api/routes/users'));
         app.use('/posts', require('./api/routes/posts'));
 
         app.set('port', config.port);
@@ -34,14 +33,14 @@ const run = function run(next) {
             console.log('Express server listening on %d, in %s mode', app.get('port'), app.get('env'));
             if (next) return next(app);
         });
-    })
+    }).catch(() => {});
 };
 
 if (require.main === module) {
     run();
 }
 
-const stop = function stop(next) {
+const stop = (next) => {
     if (server) {
         server.close(next);
     }

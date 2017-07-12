@@ -11,6 +11,15 @@ router.get('/:id', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
+router.get('/', (req, res) => {
+    postModel.getPostByUserId(req.query.userId)
+        .then(result => res.status(200).send(result))
+        .catch(err => {
+            if (err === '404') res.sendStatus(404);
+            else res.status(500).send(err);
+        });
+});
+
 router.post('/', (req, res) => {
     postModel.insert(req.body)
         .then(result => res.status(201).send(result))
