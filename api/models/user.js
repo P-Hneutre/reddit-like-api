@@ -5,6 +5,7 @@ const users = db.collection('users');
 const validationService = require('../service/validation-service');
 const _ = require('lodash');
 
+//todo check also the value of keys. Could be empty!
 const formatUser = (u) => {
     const fieldsRequired = ['firstName', 'lastName', 'email', 'password'];
     return new Promise((resolve, reject) => {

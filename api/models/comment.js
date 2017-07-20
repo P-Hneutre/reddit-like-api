@@ -7,6 +7,7 @@ const user = require('./user');
 const validationService = require('../service/validation-service');
 const _ = require('lodash');
 
+//todo check also the value of keys. Could be empty!
 const formatComment = (c) => {
     const fieldsRequired = ['userId', 'body'];
     return new Promise((resolve, reject) => {

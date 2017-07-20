@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const cors = require('cors');
 const db = require('./api/models/db');
 
 const app = express();
@@ -11,6 +12,7 @@ let server = null;
 
 const run = (next) => {
     db.init().then(() => {
+        app.use(cors());
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(cookieParser(config.session.secretKey));

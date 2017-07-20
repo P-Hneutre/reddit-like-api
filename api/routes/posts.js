@@ -13,6 +13,12 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+    postModel.getPosts(req.query.userId)
+        .then(result => res.status(200).send(result))
+        .catch(err => res.status(err.code).send(err));
+});
+
+router.get('/', (req, res) => {
     postModel.getPostByUserId(req.query.userId)
         .then(result => res.status(200).send(result))
         .catch(err => res.status(err.code).send(err));

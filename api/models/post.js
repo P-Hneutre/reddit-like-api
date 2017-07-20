@@ -7,6 +7,7 @@ const user = require('./user');
 const validationService = require('../service/validation-service');
 const _ = require('lodash');
 
+//todo check also the value of keys. Could be empty!
 const formatPost = (p) => {
     const fieldsRequired = ['userId', 'title', 'body'];
     return new Promise((resolve, reject) => {
@@ -31,6 +32,15 @@ module.exports.insert = (post) => {
                 return reject({code: 500, message: err});
             });
         }).catch(err => { return reject(err); });
+    });
+};
+
+module.exports.getPosts = () => {
+    return new Promise((resolve, reject) => {
+        posts.find().toArray().then(post => {
+            if(posts.length === 0) return reject({code: 404, message: 'Posts not found'});
+            resolve(post);
+        }).catch(err => { return reject({code: 500, message: err}); });
     });
 };
 
